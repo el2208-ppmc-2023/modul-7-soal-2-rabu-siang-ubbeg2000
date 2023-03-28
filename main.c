@@ -33,32 +33,71 @@ Queue *createQueue(){
 }
 
 void tambah(Queue *queue, int n){
-    
+    Node *temp = newNode(n);
+    if (queue->rear == NULL){
+        queue->front = temp;
+        queue->rear = temp;
+        return;
+    }
+    queue->rear->next = temp;
+    queue->rear = temp;
 }
 
 void hapus(Queue *queue){
-    printf("Belum ada data!\n");
+    if (queue->front == NULL){
+        printf("Belum ada data!\n");
+        return;
+    }
+    Node *temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL){
+        queue->rear = NULL;
+    }
+    free(temp);
 }
 
 int main(){  
+    Queue *queue = createQueue();
+    int pilihan, angka, data = 0;
+
     printf("Pilihan menu:\n");
     printf("1. Tambah Data\n");
     printf("2. Hapus Data\n");
     printf("3. Selesai\n");
 
     printf("\nMasukan pilihan: ");
-    scanf("%d", ...);
+    scanf("%d", &pilihan);
+    while(pilihan != 3){
+        if (pilihan != 1 && pilihan != 2){
+            printf("\nMasukan salah!");
+            printf("\nMasukan pilihan: ");
+            scanf("%d", &pilihan);
+        }
+        else{    
+            if (pilihan == 1){
+                printf("Masukan angka  : ");
+                scanf("%d", &angka);
+                tambah(queue, angka);
+                data++;
+            }
+            else if (pilihan == 2){
+                hapus(queue);
+                if (data > 0){
+                    printf("Data paling depan terhapus\n");
+                    data--;
+                }
+            }
+            printf("\nMasukan pilihan: ");
+            scanf("%d", &pilihan);
+        }
+    }
 
-    printf("\nMasukan salah!");
-
-    printf("Masukan angka  : ");
-    scanf("%d", ...);
-    
-    printf("Data paling depan terhapus\n");
-
-    printf("\nAngka paling depan   : %d", ...);
-    printf("\nAngka paling belakang: %d", ...);
-
-    printf("\nTidak ada data!");
+    if (data > 0){
+        printf("\nAngka paling depan   : %d", queue->front->data);
+        printf("\nAngka paling belakang: %d", queue->rear->data);
+    }
+    else{
+        printf("\nTidak ada data!");
+    }
     return 0;
 }
